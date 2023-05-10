@@ -1,41 +1,128 @@
-//
-//  main.swift
-//  Gerenciador-de-tarefas-challenge1
-//
-//  Created by userext on 09/05/23.
-//
-
 import Foundation
 
-var tarefas: [String : String] = [:]
-var count: Int = 1
-var aux = 1
+var tarefas: [String: String] = [:] // Dicionário vazio para armazenar as tarefas
 
-func adicionar() {
-    print("Digite o título:")
-    var title: String = readLine() ?? " "
-    print("Digite a descrição da tarefa:")
-    var description = readLine() ?? "  "
-
-    tarefas[title] = description
-    count += 1
+func adicionarTarefa() {
+    print("Digite o título da nova tarefa:")
+    if let titulo = readLine() {
+        print("Digite a descrição da nova tarefa:")
+        if let descricao = readLine() {
+            tarefas[titulo] = descricao
+            print("Tarefa adicionada: \(titulo)")
+        } else {
+            print("Descrição inválida.")
+        }
+    } else {
+        print("Título inválido.")
+    }
+    exibirTarefas()
 }
 
-func remover (key: String) {
-    tarefas.removeValue(forKey: key)
+func editarTarefa() {
+    print("Digite o título da tarefa que deseja editar:")
+    if let titulo = readLine() {
+        print("Digite a nova descrição da tarefa:")
+        if let novaDescricao = readLine() {
+            if tarefas.keys.contains(titulo) {
+                tarefas[titulo] = novaDescricao
+                print("Tarefa editada: \(titulo)")
+            } else {
+                print("Tarefa não encontrada.")
+            }
+        } else {
+            print("Nova descrição inválida.")
+        }
+    } else {
+        print("Título inválido.")
+    }
+    exibirTarefas()
 }
 
-func listar() {
-
+func removerTarefa() {
+    print("Digite o título da tarefa que deseja remover:")
+    if let titulo = readLine() {
+        if let _ = tarefas.removeValue(forKey: titulo) {
+            print("Tarefa removida: \(titulo)")
+        } else {
+            print("Tarefa não encontrada.")
+        }
+    } else {
+        print("Título inválido.")
+    }
+    exibirTarefas()
 }
 
-adicionar()
-adicionar()
-//print(tarefas[1]?.titulo)
-
-// print(tarefas.values)
-
-while (aux == 1){
-    
-    
+func exibirTarefas() {
+    print("\nTarefas cadastradas:")
+    if tarefas.isEmpty {
+        print("Nenhuma tarefa encontrada.")
+    } else {
+        for (titulo, descricao) in tarefas {
+            print("- \(titulo): \(descricao)")
+        }
+    }
+    print("\n")
 }
+
+func salvarTarefas(_ nomeArquivo: String) {
+    do {
+        let encoder = JSONEncoder()
+        let data = try encoder.encode(tarefas)
+        
+        let desktopURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
+        if let desktopURL = desktopURL {
+            let arquivoURL = desktopURL.appendingPathComponent(nomeArquivo).appendingPathExtension("txt")
+            try data.write(to: arquivoURL)
+            print("Arquivo JSON salvo no desktop: \(arquivoURL.path)")
+        } else {
+            print("Não foi possível obter o diretório do desktop.")
+        }
+    } catch {
+        print("Erro ao salvar tarefas: \(error.localizedDescription)")
+    }
+}
+
+// Verificar se existe um arquivo com as tarefas salvas
+let nomeArquivo = "tarefas.json"
+if let data = try? Data(contentsOf: URL(fileURLWithPath: nomeArquivo)),
+   let tarefasSalvas = try? JSONDecoder().decode([String: String].self, from: data) {
+    tarefas = tarefasSalvas
+    print("Tarefas carregadas do arquivo.")
+} else {
+    print("Nenhum arquivo de tarefas encontrado.")
+}
+// Exibir tarefas já cadastradas
+exibirTarefas()
+
+// Interface do programa
+func exibirMenu() {
+    print("===== MENU =====")
+    print("1. Criar nova tarefa")
+    print("2. Editar tarefa")
+    print("3. Excluir tarefa")
+    print("4. Fechar programa")
+    print("================")
+
+    if let opcao = readLine(), let escolha = Int(opcao) {
+        switch escolha {
+        case 1:
+            adicionarTarefa()
+        case 2:
+            editarTarefa()
+        case 3:
+            removerTarefa()
+        case 4:
+            salvarTarefas(nomeArquivo)
+            print("Tarefas salvas. O programa será fechado.")
+            return
+        default:
+            print("Opção inválida.")
+        }
+    } else {
+        print("Opção inválida.")
+    }
+
+    exibirMenu()
+}
+
+exibirMenu()

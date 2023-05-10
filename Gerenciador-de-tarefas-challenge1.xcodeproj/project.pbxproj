@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		642E0BB22A0B05F700EFE3BE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642E0BB12A0B05F700EFE3BE /* main.swift */; };
-		642E0BB92A0B063600EFE3BE /* Tarefa.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642E0BB82A0B063600EFE3BE /* Tarefa.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,7 +25,6 @@
 /* Begin PBXFileReference section */
 		642E0BAE2A0B05F700EFE3BE /* Gerenciador-de-tarefas-challenge1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Gerenciador-de-tarefas-challenge1"; sourceTree = BUILT_PRODUCTS_DIR; };
 		642E0BB12A0B05F700EFE3BE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		642E0BB82A0B063600EFE3BE /* Tarefa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tarefa.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +58,6 @@
 			isa = PBXGroup;
 			children = (
 				642E0BB12A0B05F700EFE3BE /* main.swift */,
-				642E0BB82A0B063600EFE3BE /* Tarefa.swift */,
 			);
 			path = "Gerenciador-de-tarefas-challenge1";
 			sourceTree = "<group>";
@@ -123,7 +120,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				642E0BB92A0B063600EFE3BE /* Tarefa.swift in Sources */,
 				642E0BB22A0B05F700EFE3BE /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

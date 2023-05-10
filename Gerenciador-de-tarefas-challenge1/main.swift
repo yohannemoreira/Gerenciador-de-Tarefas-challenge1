@@ -68,15 +68,9 @@ func salvarTarefas(_ nomeArquivo: String) {
     do {
         let encoder = JSONEncoder()
         let data = try encoder.encode(tarefas)
-        
         let desktopURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
-        if let desktopURL = desktopURL {
-            let arquivoURL = desktopURL.appendingPathComponent(nomeArquivo).appendingPathExtension("txt")
-            try data.write(to: arquivoURL)
-            print("Arquivo JSON salvo no desktop: \(arquivoURL.path)")
-        } else {
-            print("Não foi possível obter o diretório do desktop.")
-        }
+        let fileURL = desktopURL?.appendingPathComponent(nomeArquivo)
+        try data.write(to: fileURL!)
     } catch {
         print("Erro ao salvar tarefas: \(error.localizedDescription)")
     }
@@ -84,13 +78,16 @@ func salvarTarefas(_ nomeArquivo: String) {
 
 // Verificar se existe um arquivo com as tarefas salvas
 let nomeArquivo = "tarefas.json"
-if let data = try? Data(contentsOf: URL(fileURLWithPath: nomeArquivo)),
+let desktopURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
+let fileURL = desktopURL?.appendingPathComponent(nomeArquivo)
+if let data = try? Data(contentsOf: fileURL!),
    let tarefasSalvas = try? JSONDecoder().decode([String: String].self, from: data) {
     tarefas = tarefasSalvas
     print("Tarefas carregadas do arquivo.")
 } else {
     print("Nenhum arquivo de tarefas encontrado.")
 }
+
 // Exibir tarefas já cadastradas
 exibirTarefas()
 
@@ -122,7 +119,9 @@ func exibirMenu() {
         print("Opção inválida.")
     }
 
-    exibirMenu()
+    exibirMenu() // Chamar novamente o menu para exibir as opções novamente
 }
 
+// Iniciar o programa
+//exibirTarefas()
 exibirMenu()

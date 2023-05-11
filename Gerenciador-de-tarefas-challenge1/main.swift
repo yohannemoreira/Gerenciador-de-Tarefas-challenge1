@@ -1,93 +1,70 @@
 import Foundation
 
-var tarefas: [String: String] = [:] // Dicionário vazio para armazenar as tarefas
+var tasks: [String: String] = [:]
 
-func adicionarTarefa() {
+func addNewTask() {
     print("Digite o título da nova tarefa:")
-    if let titulo = readLine() {
-        print("Digite a descrição da nova tarefa:")
-        if let descricao = readLine() {
-            tarefas[titulo] = descricao
-            print("Tarefa adicionada: \(titulo)")
-        } else {
-            print("Descrição inválida.")
-        }
-    } else {
-        print("Título inválido.")
-    }
-    exibirTarefas()
+    guard let titulo = readLine() else {
+        return print("Título inválido.")}
+    print("Digite a descrição da nova tarefa:")
+    guard let descricao = readLine() else {
+        return print("Descrição inválida.")}
+    tasks[titulo] = descricao
+    print("Tarefa adicionada: \(titulo)")
+    
+    showTasks()
 }
 
-func editarTarefa() {
+
+func editTask() {
     print("Digite o título da tarefa que deseja editar:")
-    if let titulo = readLine() {
-        print("Digite a nova descrição da tarefa:")
-        if let novaDescricao = readLine() {
-            if tarefas.keys.contains(titulo) {
-                tarefas[titulo] = novaDescricao
-                print("Tarefa editada: \(titulo)")
-            } else {
-                print("Tarefa não encontrada.")
-            }
-        } else {
-            print("Nova descrição inválida.")
-        }
+    guard let titulo = readLine() else {
+        return print("Título inválido.")}
+    print("Digite a nova descrição da tarefa:")
+    guard let novaDescricao = readLine() else {
+        return print("Nova descrição inválida.")}
+    if tasks.keys.contains(titulo) {
+        tasks[titulo] = novaDescricao
+        print("Tarefa editada: \(titulo)")
     } else {
-        print("Título inválido.")
+        print("Tarefa não encontrada.")
     }
-    exibirTarefas()
+    showTasks()
 }
 
-func removerTarefa() {
+func removeTask() {
     print("Digite o título da tarefa que deseja remover:")
-    if let titulo = readLine() {
-        if let _ = tarefas.removeValue(forKey: titulo) {
-            print("Tarefa removida: \(titulo)")
-        } else {
-            print("Tarefa não encontrada.")
-        }
-    } else {
-        print("Título inválido.")
+    guard let titulo = readLine() else {
+        return print("Título inválido.")
     }
-    exibirTarefas()
+    guard let _ = tasks.removeValue(forKey: titulo) else {
+        return print("Tarefa não encontrada.")
+    }
+    print("Tarefa removida: \(titulo)")
+    showTasks()
 }
 
-func exibirTarefas() {
-    print("\nTarefas cadastradas:")
-    if tarefas.isEmpty {
+func showTasks() {
+    print("\ntasks cadastradas:")
+    if tasks.isEmpty {
         print("Nenhuma tarefa encontrada.")
     } else {
-        for (titulo, descricao) in tarefas {
+        for (titulo, descricao) in tasks {
             print("- \(titulo): \(descricao)")
         }
     }
     print("\n")
 }
 
-func concluirTarefa () {
-    print("Digite o título da tarefa que deseja marcar como concluída:")
-    guard let titulo = readLine() else {
-        return print("Essa tarefa não existe")
-    }
-    guard let descricao = tarefas[titulo] else {
-        return print("Ocorreu um erro")
-    }
-//    tarefas.updateValue( "\(descricao), ✅", forKey: titulo)
-    var tituloNovo: String = "✅ \(titulo)"
-    tarefas[tituloNovo] = descricao
-    tarefas.removeValue(forKey: titulo)
-    exibirTarefas()
-}
-
-func salvarTarefas(_ nomeArquivo: String) {
+func saveTasks(_ nomeArquivo: String) {
     do {
         let encoder = JSONEncoder()
-        let data = try encoder.encode(tarefas)
+        let data = try encoder.encode(tasks)
         let desktopURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
         let fileURL = desktopURL?.appendingPathComponent(nomeArquivo)
         try data.write(to: fileURL!)
     } catch {
-        print("Erro ao salvar tarefas: \(error.localizedDescription)")
+        print("Erro ao salvar tasks: \(error.localizedDescription)")
     }
 }
 
@@ -96,42 +73,39 @@ let desktopURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomai
 let fileURL = desktopURL?.appendingPathComponent(nomeArquivo)
 if let data = try? Data(contentsOf: fileURL!),
    let tarefasSalvas = try? JSONDecoder().decode([String: String].self, from: data) {
-    tarefas = tarefasSalvas
-    // print("Tarefas carregadas do arquivo.")
+    tasks = tarefasSalvas
+    // print("tasks carregadas do arquivo.")
 } else {
-    print("Nenhum arquivo de tarefas encontrado.")
+    print("Nenhum arquivo de tasks encontrado.")
 }
 
 
 print("------------------------- 📝 Tarefas ------------------------")
-exibirTarefas()
+showTasks()
 print("------------------------- FIM DA LISTA -----------------------")
 print("\n")
 // Interface do programa
-func exibirMenu() {
+func showMenu() {
     print("--------------------------- 📓 MENU ---------------------------")
     print("1. Criar nova tarefa")
     print("2. Editar tarefa")
     print("3. Excluir tarefa")
-    print("4. Exibir tarefas")
-    print("5. Concluir tarefa")
-    print("6. Fechar programa")
+    print("4. Exibir Tarefas")
+    print("5. Fechar programa")
     print("--------------------------------------------------------------")
 
     if let opcao = readLine(), let escolha = Int(opcao) {
         switch escolha {
         case 1:
-            adicionarTarefa()
+            addNewTask()
         case 2:
-            editarTarefa()
+            editTask()
         case 3:
-            removerTarefa()
+            removeTask()
         case 4:
-            exibirTarefas()
+            showTasks()
         case 5:
-            concluirTarefa()
-        case 6:
-            salvarTarefas(nomeArquivo)
+            saveTasks(nomeArquivo)
             print("Tarefas salvas. O programa será fechado.")
             return
         default:
@@ -140,10 +114,6 @@ func exibirMenu() {
     } else {
         print("Opção inválida.")
     }
-
-    exibirMenu() // Chamar novamente o menu para exibir as opções novamente
+    showMenu()
 }
-
-// Iniciar o programa
-//exibirTarefas()
-exibirMenu()
+showMenu()

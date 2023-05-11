@@ -83,22 +83,25 @@ let fileURL = desktopURL?.appendingPathComponent(nomeArquivo)
 if let data = try? Data(contentsOf: fileURL!),
    let tarefasSalvas = try? JSONDecoder().decode([String: String].self, from: data) {
     tarefas = tarefasSalvas
-    print("Tarefas carregadas do arquivo.")
+    // print("Tarefas carregadas do arquivo.")
 } else {
     print("Nenhum arquivo de tarefas encontrado.")
 }
 
-// Exibir tarefas já cadastradas
-exibirTarefas()
 
+print("------------------------- 📝 Tarefas ------------------------")
+exibirTarefas()
+print("------------------------- FIM DA LISTA -----------------------")
+print("\n")
 // Interface do programa
 func exibirMenu() {
-    print("===== MENU =====")
+    print("--------------------------- 📓 MENU ---------------------------")
     print("1. Criar nova tarefa")
     print("2. Editar tarefa")
     print("3. Excluir tarefa")
-    print("4. Fechar programa")
-    print("================")
+    print("4. Exibir tarefas")
+    print("5. Fechar programa")
+    print("--------------------------------------------------------------")
 
     if let opcao = readLine(), let escolha = Int(opcao) {
         switch escolha {
@@ -109,6 +112,8 @@ func exibirMenu() {
         case 3:
             removerTarefa()
         case 4:
+            exibirTarefas()
+        case 5:
             salvarTarefas(nomeArquivo)
             print("Tarefas salvas. O programa será fechado.")
             return

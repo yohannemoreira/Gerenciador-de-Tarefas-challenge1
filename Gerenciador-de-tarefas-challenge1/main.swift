@@ -11,7 +11,7 @@ func addNewTask() {
         return print("Descrição inválida.")}
     tasks[titulo] = descricao
     print("Tarefa adicionada: \(titulo)")
-    
+    print("\n")
     showTasks()
 }
 
@@ -45,7 +45,7 @@ func removeTask() {
 }
 
 func showTasks() {
-    print("\ntasks cadastradas:")
+    print("------------------------- 📝 Tarefas ------------------------")
     if tasks.isEmpty {
         print("Nenhuma tarefa encontrada.")
     } else {
@@ -68,6 +68,20 @@ func saveTasks(_ nomeArquivo: String) {
     }
 }
 
+func CompleteTask () {
+    print("Digite o título da tarefa que deseja marcar como concluída:")
+    guard let title = readLine() else {
+        return print("Essa tarefa não existe")
+    }
+   guard let description = tasks[title] else {
+        return print("Ocorreu um erro")
+   }
+    tasks.updateValue( "\(description) | ✅", forKey: title)
+//    var NewTitle: String = "✅ (titulo)"
+//    tasks[NewTitle] = description
+//    tasks.removeValue(forKey: title)
+    showTasks()
+}
 let nomeArquivo = "tarefas.json"
 let desktopURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
 let fileURL = desktopURL?.appendingPathComponent(nomeArquivo)
@@ -80,7 +94,7 @@ if let data = try? Data(contentsOf: fileURL!),
 }
 
 
-print("------------------------- 📝 Tarefas ------------------------")
+// print("------------------------- 📝 Tarefas ------------------------")
 showTasks()
 print("------------------------- FIM DA LISTA -----------------------")
 print("\n")
@@ -91,7 +105,8 @@ func showMenu() {
     print("2. Editar tarefa")
     print("3. Excluir tarefa")
     print("4. Exibir Tarefas")
-    print("5. Fechar programa")
+    print("5. Concluir uma tarefa")
+    print("6. Fechar programa")
     print("--------------------------------------------------------------")
 
     if let opcao = readLine(), let escolha = Int(opcao) {
@@ -105,6 +120,8 @@ func showMenu() {
         case 4:
             showTasks()
         case 5:
+            CompleteTask()
+        case 6:
             saveTasks(nomeArquivo)
             print("Tarefas salvas. O programa será fechado.")
             return

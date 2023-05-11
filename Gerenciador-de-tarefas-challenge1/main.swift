@@ -1,16 +1,17 @@
 import Foundation
+//import Rainbow
 
 var tasks: [String: String] = [:]
 
 func addNewTask() {
     print("Digite o título da nova tarefa:")
-    guard let titulo = readLine() else {
+    guard let tittle = readLine() else {
         return print("Título inválido.")}
     print("Digite a descrição da nova tarefa:")
-    guard let descricao = readLine() else {
+    guard let description = readLine() else {
         return print("Descrição inválida.")}
-    tasks[titulo] = descricao
-    print("Tarefa adicionada: \(titulo)")
+    tasks[tittle] = description
+    print("Tarefa adicionada: \(tittle)")
     print("\n")
     showTasks()
 }
@@ -18,29 +19,31 @@ func addNewTask() {
 
 func editTask() {
     print("Digite o título da tarefa que deseja editar:")
-    guard let titulo = readLine() else {
+    guard let tittle = readLine() else {
         return print("Título inválido.")}
     print("Digite a nova descrição da tarefa:")
-    guard let novaDescricao = readLine() else {
+    guard let novadescription = readLine() else {
         return print("Nova descrição inválida.")}
-    if tasks.keys.contains(titulo) {
-        tasks[titulo] = novaDescricao
-        print("Tarefa editada: \(titulo)")
+    if tasks.keys.contains(tittle) {
+        tasks[tittle] = novadescription
+        print("Tarefa editada: \(tittle)")
     } else {
         print("Tarefa não encontrada.")
     }
+    print("\n")
     showTasks()
 }
 
 func removeTask() {
     print("Digite o título da tarefa que deseja remover:")
-    guard let titulo = readLine() else {
+    guard let tittle = readLine() else {
         return print("Título inválido.")
     }
-    guard let _ = tasks.removeValue(forKey: titulo) else {
+    guard let _ = tasks.removeValue(forKey: tittle) else {
         return print("Tarefa não encontrada.")
     }
-    print("Tarefa removida: \(titulo)")
+    print("Tarefa removida: \(tittle)")
+    print("\n")
     showTasks()
 }
 
@@ -49,8 +52,8 @@ func showTasks() {
     if tasks.isEmpty {
         print("Nenhuma tarefa encontrada.")
     } else {
-        for (titulo, descricao) in tasks {
-            print("- \(titulo): \(descricao)")
+        for (tittle, description) in tasks {
+            print("- \(tittle): \(description)")
         }
     }
     print("\n")
@@ -64,7 +67,7 @@ func saveTasks(_ nomeArquivo: String) {
         let fileURL = desktopURL?.appendingPathComponent(nomeArquivo)
         try data.write(to: fileURL!)
     } catch {
-        print("Erro ao salvar tasks: \(error.localizedDescription)")
+        print("Erro ao salvar tarefas: \(error.localizedDescription)")
     }
 }
 
@@ -77,20 +80,21 @@ func CompleteTask () {
         return print("Ocorreu um erro")
    }
     tasks.updateValue( "\(description) | ✅", forKey: title)
-//    var NewTitle: String = "✅ (titulo)"
+//    var NewTitle: String = "✅ (tittle)"
 //    tasks[NewTitle] = description
 //    tasks.removeValue(forKey: title)
+    print("\n")
     showTasks()
 }
 let nomeArquivo = "tarefas.json"
 let desktopURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
 let fileURL = desktopURL?.appendingPathComponent(nomeArquivo)
 if let data = try? Data(contentsOf: fileURL!),
-   let tarefasSalvas = try? JSONDecoder().decode([String: String].self, from: data) {
-    tasks = tarefasSalvas
+   let savedTasks = try? JSONDecoder().decode([String: String].self, from: data) {
+    tasks = savedTasks
     // print("tasks carregadas do arquivo.")
 } else {
-    print("Nenhum arquivo de tasks encontrado.")
+    print("Nenhum arquivo de tarefas encontrado.")
 }
 
 
@@ -100,7 +104,7 @@ print("------------------------- FIM DA LISTA -----------------------")
 print("\n")
 // Interface do programa
 func showMenu() {
-    print("--------------------------- 📓 MENU ---------------------------")
+    print("--------------------------- 📓 MENU ---------------------------" )
     print("1. Criar nova tarefa")
     print("2. Editar tarefa")
     print("3. Excluir tarefa")
@@ -109,7 +113,7 @@ func showMenu() {
     print("6. Fechar programa")
     print("--------------------------------------------------------------")
 
-    if let opcao = readLine(), let escolha = Int(opcao) {
+    if let option = readLine(), let escolha = Int(option) {
         switch escolha {
         case 1:
             addNewTask()

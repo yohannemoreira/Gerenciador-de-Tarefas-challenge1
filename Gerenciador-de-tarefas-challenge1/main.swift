@@ -64,6 +64,21 @@ func exibirTarefas() {
     print("\n")
 }
 
+func concluirTarefa () {
+    print("Digite o título da tarefa que deseja marcar como concluída:")
+    guard let titulo = readLine() else {
+        return print("Essa tarefa não existe")
+    }
+    guard let descricao = tarefas[titulo] else {
+        return print("Ocorreu um erro")
+    }
+//    tarefas.updateValue( "\(descricao), ✅", forKey: titulo)
+    var tituloNovo: String = "✅ \(titulo)"
+    tarefas[tituloNovo] = descricao
+    tarefas.removeValue(forKey: titulo)
+    exibirTarefas()
+}
+
 func salvarTarefas(_ nomeArquivo: String) {
     do {
         let encoder = JSONEncoder()
@@ -76,7 +91,6 @@ func salvarTarefas(_ nomeArquivo: String) {
     }
 }
 
-// Verificar se existe um arquivo com as tarefas salvas
 let nomeArquivo = "tarefas.json"
 let desktopURL = FileManager.default.urls(for: .desktopDirectory, in: .userDomainMask).first
 let fileURL = desktopURL?.appendingPathComponent(nomeArquivo)
@@ -100,7 +114,8 @@ func exibirMenu() {
     print("2. Editar tarefa")
     print("3. Excluir tarefa")
     print("4. Exibir tarefas")
-    print("5. Fechar programa")
+    print("5. Concluir tarefa")
+    print("6. Fechar programa")
     print("--------------------------------------------------------------")
 
     if let opcao = readLine(), let escolha = Int(opcao) {
@@ -114,6 +129,8 @@ func exibirMenu() {
         case 4:
             exibirTarefas()
         case 5:
+            concluirTarefa()
+        case 6:
             salvarTarefas(nomeArquivo)
             print("Tarefas salvas. O programa será fechado.")
             return

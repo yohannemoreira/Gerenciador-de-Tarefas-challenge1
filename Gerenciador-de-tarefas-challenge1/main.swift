@@ -1,7 +1,7 @@
 import Foundation
+
 var tasks: [String: String] = [:]
 
-import Foundation
 func addNewTask() {
     print("""
 * ════════════════════════════════ *

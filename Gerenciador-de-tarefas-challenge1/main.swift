@@ -3,11 +3,19 @@ var tasks: [String: String] = [:]
 
 import Foundation
 func addNewTask() {
-    print("Digite o título da nova tarefa:")
+    print("""
+* ════════════════════════════════ *
+║ Digite o título da nova tarefa:  ║
+* ════════════════════════════════ *
+""")
     guard let title = readLine() else {
         return print("Título inválido.")}
-    print("Digite a descrição da nova tarefa:")
-    guard let description = readLine() else {
+    print("""
+* ════════════════════════════════════ *
+║ Digite a descrição da nova tarefa:   ║
+* ════════════════════════════════════ *
+""")
+        guard let description = readLine() else {
         return print("Descrição inválida.")}
     tasks[title] = description
     print("Tarefa adicionada: \(title)")
@@ -17,10 +25,19 @@ func addNewTask() {
 
 
 func editTask() {
-    print("Digite o título da tarefa que deseja editar:")
+    print("""
+* ════════════════════════════════════════════ *
+║ Digite o título da tarefa que deseja editar: ║
+* ════════════════════════════════════════════ *
+""")
     guard let title = readLine() else {
         return print("Título inválido.")}
-    print("Digite a nova descrição da tarefa:")
+    print("""
+* ════════════════════════════════════════════ *
+║ Digite a nova descrição da tarefa:           ║
+* ════════════════════════════════════════════ *
+""")
+    print("")
     guard let newDescription = readLine() else {
         return print("Nova descrição inválida.")}
     if tasks.keys.contains(title) {
@@ -34,7 +51,11 @@ func editTask() {
 }
 
 func removeTask() {
-    print("Digite o título da tarefa que deseja remover:")
+    print("""
+* ════════════════════════════════════════════ *
+║ Digite o título da tarefa que deseja remover:║
+* ════════════════════════════════════════════ *
+""")
     guard let title = readLine() else {
         return print("Título inválido.")
     }
@@ -47,7 +68,7 @@ func removeTask() {
 }
 
 func showTasks() {
-    print("------------------------- 📝 Tarefas ------------------------")
+    print(" 📝 Tarefas 📝")
     if tasks.isEmpty {
         print("Nenhuma tarefa encontrada.")
     } else {
@@ -55,7 +76,7 @@ func showTasks() {
             print("- \(title): \(description)")
         }
     }
-    print("-----------------------▪️FIM DA LISTA▪️----------------------")
+    print("▪️FIM DA LISTA▪️")
     print("\n")
 }
 
@@ -72,7 +93,11 @@ func saveTasks(_ nomeArquivo: String) {
 }
 
 func completeTask () {
-    print("Digite o título da tarefa que deseja marcar como concluída:")
+    print("""
+* ═══════════════════════════════════════════════════════════ *
+║ Digite o título da tarefa que deseja marcar como concluída: ║
+* ═══════════════════════════════════════════════════════════ *
+""")
     guard let title = readLine() else {
         return print("Essa tarefa não existe")
     }
@@ -99,19 +124,33 @@ if let data = try? Data(contentsOf: fileURL!),
     print("Nenhum arquivo de tarefas encontrado.")
 }
 
-showTasks()
+
+let dataDeHj = Date()
+let formatador = DateFormatter()
+formatador.dateFormat = "dd/MM/yyyy HH:mm:ss"
+let dataHoraFormatada = formatador.string(from: dataDeHj)
+
 
 print("\n")
 // Interface do programa
 func showMenu() {
-    print("--------------------------- 📓 MENU --------------------------" )
-    print("1. Criar nova tarefa")
-    print("2. Editar tarefa")
-    print("3. Excluir tarefa")
-    print("4. Exibir Tarefas")
-    print("5. Concluir uma tarefa")
-    print("6. Fechar programa")
-    print("---------------------------------------------------------------")
+    print("""
+* ════════════════════════ *
+║    \(dataHoraFormatada)   ║
+* ════════════════════════ *
+║         📓MENU           ║
+║ 1. Adicionar tarefa✍️    ║
+║ 2. Editar tarefa📝       ║
+║ 3. Remover tarefa❌      ║
+║ 4. Mostrar tarefas👀     ║
+║ 5. Concluir uma tarefa✅ ║
+║ 6. Encerrar o programa⏱️ ║
+* ════════════════════════ *
+
+* ════════════════════════ *
+║ Selecione uma opção:     ║
+* ════════════════════════ *
+""")
     
     if let option = readLine(), let escolha = Int(option) {
         switch escolha {

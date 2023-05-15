@@ -38,6 +38,9 @@ func editTask() {
 """)
     guard let title = readLine() else {
         return print("Título inválido.")}
+    if !tasks.keys.contains(title){
+        return print("Tarefa não encontrada")
+    }
     print("""
 * ════════════════════════════════════════════ *
 ║ Digite a nova descrição da tarefa:           ║
@@ -49,8 +52,6 @@ func editTask() {
     if tasks.keys.contains(title) {
         tasks[title] = newDescription
         print("Tarefa editada: \(title)")
-    } else {
-        print("Tarefa não encontrada.")
     }
     print("\n")
     showTasks()
@@ -183,3 +184,4 @@ func showMenu() {
     showMenu()
 }
 showMenu()
+

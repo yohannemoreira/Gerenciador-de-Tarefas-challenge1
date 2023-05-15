@@ -17,6 +17,12 @@ func addNewTask() {
 """)
         guard let description = readLine() else {
         return print("Descrição inválida.")}
+    if title  == "" || description == "" {
+        return print("Titulo ou Descricao invalidos.")
+    }
+    if tasks.keys.contains(title) {
+        return print("Tarefa ja cadastrada")
+    }
     tasks[title] = description
     print("Tarefa adicionada: \(title)")
     print("\n")
